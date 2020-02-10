@@ -1,0 +1,88 @@
+from typing import List
+
+class Person:
+    def __init__(self, name:str):
+        self.__name = name
+        self.__x = 0
+        self.__y = 0
+        self.__bus = None
+    
+    def get_name(self):
+        return self.__name
+
+    def get_coordinates(self):
+        return (self.__x, self.__y)
+
+    def move(self, x, y):
+        self.__x += x
+        self.__y +=y
+
+    def get_on_bus(self, bus):
+        bus.add_person(self)
+        self.__bus = bus
+
+    def get_name_of_bus(self):
+        if self.__bus:
+            return self.__bus.get_name()
+        else:
+            return "not in bus"
+
+
+
+class Bus:
+    def __init__(self,  number:str = "000"):
+        self.__number = number
+        self.__persons = []
+        self.__x = 0
+        self.__y = 0
+
+    def get_number(self):
+        return self.__number
+
+    def add_person(self, person):
+        self.__persons.append(person)
+
+    def remove_person(self, name:str):
+        for per in self.__persons:
+            if per.get_name() == name:
+                self.__persons.remove(per)
+
+    def show_passengers(self):
+        for per in self.__persons:
+            print(per.get_name())
+
+    def get_coordinates(self):
+        return (self.__x, self.__y)
+
+    def move(self, x, y):
+        self.__x = x
+        self.__y = y
+        for person in self.__persons:
+            person.move(x, y)
+
+
+def main():
+    p1 = Person("Magsud")
+    p2 = Person("Behmen")
+    p3 = Person("Elxan")
+    p4 = Person("Tahir")
+
+    bus = Bus("555")
+
+    p1.get_on_bus(bus)
+    p2.get_on_bus(bus)
+    p3.get_on_bus(bus)
+    p4.get_on_bus(bus)
+
+    bus.remove_person("Tahir")
+    bus.move(4.6, 7.7)
+    bus.remove_person("Behmen")
+    bus.move(5.5, 7.7)
+    bus.remove_person("Elxan")
+
+
+    for person in (p1, p2, p3, p4):
+        print(f"{person.get_name()} in {person.get_coordinates()}")
+
+if __name__ == '__main__':
+    main()
